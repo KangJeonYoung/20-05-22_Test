@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjy.mapper.ReplyMapper">
+
+	<select id="getList" resultType="com.kjy.domain.ReplyVO">
+		<![CDATA[
+			select * from tbl_reply rno
+		]]>
+	</select>
+	
+	<insert id="insert">
+		insert into tbl_reply (rno, bno, reply, replyer) values (seq_reply.nextval, #{bno}, #{reply}, #{replyer})
+	</insert>
+	
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="rno" order="BEFORE" resultType="long">
+			select seq_reply.nextval from dual
+		</selectKey>
+		insert into tbl_reply (rno, bno, reply, replyer)
+		values (#{rno}, #{bno}, #{reply}, #{replyer})
+	</insert>
+	
+	<select id="read" resultType="com.kjy.domain.ReplyVO">
+		select * from tbl_reply where rno = #{rno}
+	</select>
+	
+	<delete id="delete">
+		delete from tbl_reply where rno = #{rno}
+	</delete>
+
+	<update id = "update">
+		update tbl_reply set reply = #{reply}, replyer = #{replyer}, updateDate = sysdate where rno = #{rno}
+	</update>
+	
+	<select id="getListWithPaging" resultType="com.kjy.domain.ReplyVO">
+		select rno, bno, reply, replyer, replyDate, updatedate
+		from tbl_reply
+		where bno = #{bno}
+		order by rno asc
+	</select>
+	
+</mapper>
